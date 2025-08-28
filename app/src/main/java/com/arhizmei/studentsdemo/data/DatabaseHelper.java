@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.arhizmei.studentsdemo.model.Student;
 import com.arhizmei.studentsdemo.utils.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(@Nullable Context context) {
         super(context, Util.TABLE_NAME, null, Util.TABLE_VERSION);
@@ -22,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_STUDENT_TABLE = "CREATE TABLE " +
                 Util.TABLE_NAME + "(" +
                 Util.KEY_ID + " INTEGER PRIMARY KEY," +
-                Util.TABLE_NAME + " TEXT," +
+                Util.KEY_NAME + " TEXT," +
                 Util.KEY_SURNAME + " TEXT," +
                 Util.KEY_UNIVERSITY + " TEXT," +
                 Util.KEY_AVERAGE_GRADE + " TEXT" + ")";
@@ -77,4 +80,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return student;
     }
 
+    public List<Student> getAllStudents() {
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        List<Student> studentList = new ArrayList<>();
+
+        String selectStudent = "SELECT * FROM " + Util.TABLE_NAME;
+        Cursor cursor = database.rawQuery(selectStudent, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Student student = new Student();
+                student.setId(cursor.getInt(0));
+                student.setName(cursor.getString(1));
+                student.setSurname(cursor.getString(2));
+                student.setUniversity(cursor.getString(3));
+                student.setAverageGrade(cursor.getString(4));
+                studentList.add(student);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+        return studentList;
+    }
 }

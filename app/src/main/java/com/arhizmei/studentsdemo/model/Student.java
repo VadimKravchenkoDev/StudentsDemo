@@ -1,18 +1,19 @@
 package com.arhizmei.studentsdemo.model;
 
 public class Student {
-    private int id;
+    private int id = 0;
     private String name;
     private String surname;
     private String university;
     private String averageGrade;
 
 
-    public Student(String averageGrade, String university, String surname, String name) {
-        this.averageGrade = averageGrade;
-        this.university = university;
-        this.surname = surname;
+    public Student(String name, String surname, String university, String averageGrade) {
+
         this.name = name;
+        this.surname = surname;
+        this.university = university;
+        this.averageGrade = averageGrade;
     }
 
     public Student(int id, String name, String surname, String university, String averageGrade) {
@@ -21,6 +22,9 @@ public class Student {
         this.surname = surname;
         this.university = university;
         this.averageGrade = averageGrade;
+    }
+
+    public Student() {
     }
 
     public int getId() {
