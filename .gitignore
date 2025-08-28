@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+build/
+
+# Android Studio
+.idea/
+*.iml
+*.hprof
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log files
+*.log
+
+# Android specific
+captures/
+output.json
+
+# Kotlin
+*.kotlin_module
+
+# IntelliJ
+*.ipr
+*.iws
+out/
+
+# Misc
+.DS_Store
+*.swp
