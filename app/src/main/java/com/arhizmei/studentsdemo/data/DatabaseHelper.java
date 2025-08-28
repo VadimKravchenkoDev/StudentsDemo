@@ -1,11 +1,13 @@
 package com.arhizmei.studentsdemo.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.arhizmei.studentsdemo.model.Student;
 import com.arhizmei.studentsdemo.utils.Util;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -32,4 +34,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(" DROP TABLE IF EXISTS "+ Util.TABLE_NAME);
         onCreate(db);
     }
+
+    public void addStudent(Student student){
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Util.KEY_NAME, student.getName());
+        contentValues.put(Util.KEY_SURNAME, student.getSurname());
+        contentValues.put(Util.KEY_UNIVERSITY, student.getUniversity());
+        contentValues.put(Util.KEY_AVERAGE_GRADE, student.getAverageGrade());
+
+        database.insert(Util.TABLE_NAME, null, contentValues);
+        database.close();
+    }
+
 }
