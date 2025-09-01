@@ -1,7 +1,7 @@
 package com.arhizmei.studentsdemo.utils;
 
 public class Util {
-    public static final int TABLE_VERSION = 1;
+    public static final int TABLE_VERSION = 2;
     public static final String KEY_ID = "id";
     public static final String TABLE_NAME = "studentsDB";
     public static final String KEY_NAME = "name";

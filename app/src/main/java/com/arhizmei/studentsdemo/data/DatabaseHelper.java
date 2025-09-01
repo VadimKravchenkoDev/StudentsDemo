@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -25,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_STUDENT_TABLE = "CREATE TABLE " +
                 Util.TABLE_NAME + "(" +
                 Util.KEY_ID + " INTEGER PRIMARY KEY," +
-                Util.KEY_NAME + " TEXT," +
+                Util.KEY_NAME + " TEXT," +       // <-- здесь KEY_NAME
                 Util.KEY_SURNAME + " TEXT," +
                 Util.KEY_UNIVERSITY + " TEXT," +
                 Util.KEY_AVERAGE_GRADE + " TEXT" + ")";
@@ -48,7 +49,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(Util.KEY_UNIVERSITY, student.getUniversity());
         contentValues.put(Util.KEY_AVERAGE_GRADE, student.getAverageGrade());
 
-        database.insert(Util.TABLE_NAME, null, contentValues);
+        long id = database.insert(Util.TABLE_NAME, null, contentValues);
+        if(id != -1){
+            Log.d("DatabaseHelper", "Added student with id: " + id);
+        } else {
+            Log.d("DatabaseHelper", "Failed to add student: " + student.getName());
+        }
         database.close();
     }
 
@@ -112,16 +118,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(Util.KEY_UNIVERSITY, student.getUniversity());
         contentValues.put(Util.KEY_AVERAGE_GRADE, student.getAverageGrade());
 
-        return database.update(Util.TABLE_NAME, contentValues, Util.KEY_ID + "+?",
+        int rows = database.update(Util.TABLE_NAME, contentValues, Util.KEY_ID + "=?",
                 new String[]{String.valueOf(student.getId())});
+        Log.d("DatabaseHelper", "Updated " + rows + " rows for student id: " + student.getId());
+        database.close();
+        return rows;
     }
 
     public void deleteStudent(Student student) {
         SQLiteDatabase database = this.getWritableDatabase();
-
-        database.delete(Util.TABLE_NAME, Util.KEY_ID + "=?",
+        int rows = database.delete(Util.TABLE_NAME, Util.KEY_ID + "=?",
                 new String[]{String.valueOf(student.getId())});
-
+        Log.d("DatabaseHelper", "Deleted " + rows + " rows for student id: " + student.getId());
         database.close();
+    }
+
+    public int getStudentCount(){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String countQuery = "SELECT * FROM " + Util.TABLE_NAME;
+        Cursor cursor = database.rawQuery(countQuery, null);
+
+        int count = -1;
+        if(cursor != null){
+            try {
+                count = cursor.getCount();
+            } finally {
+                 cursor.close();
+            }
+        }
+        return  count;
     }
 }
