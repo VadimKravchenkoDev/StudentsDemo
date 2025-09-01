@@ -102,4 +102,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
         return studentList;
     }
+
+    public int updateStudent(Student student) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(Util.KEY_NAME, student.getName());
+        contentValues.put(Util.KEY_SURNAME, student.getSurname());
+        contentValues.put(Util.KEY_UNIVERSITY, student.getUniversity());
+        contentValues.put(Util.KEY_AVERAGE_GRADE, student.getAverageGrade());
+
+        return database.update(Util.TABLE_NAME, contentValues, Util.KEY_ID + "+?",
+                new String[]{String.valueOf(student.getId())});
+    }
+
+    public void deleteStudent(Student student) {
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        database.delete(Util.TABLE_NAME, Util.KEY_ID + "=?",
+                new String[]{String.valueOf(student.getId())});
+
+        database.close();
+    }
 }

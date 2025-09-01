@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
-
         databaseHelper.addStudent(new Student("Ivan", "Suslov", "Oxford", "4.5"));
         databaseHelper.addStudent(new Student("Dima", "Ivanov", "Oxford", "4.1"));
         databaseHelper.addStudent(new Student("Roma", "Petrov", "Oxford", "3.5"));
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         List<Student> studentsList = databaseHelper.getAllStudents();
 
         for (Student student : studentsList) {
-            Log.d("student", "Id " + String.valueOf(student.getId())
+            Log.d("myLogSt", "Id " + String.valueOf(student.getId())
                     + "name " + student.getName()
                     + "surname " + student.getSurname()
                     + "university " + student.getUniversity()
